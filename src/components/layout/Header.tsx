@@ -3,19 +3,27 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { 
-  ShoppingCart, 
-  User, 
   Search,
   Menu,
-  Heart
+  Heart,
+  User,
+  LogOut
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import CartDrawer from '@/components/cart/CartDrawer';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Header = () => {
-  const [cartCount] = useState(3); // Mock cart count
-  const [isLoggedIn] = useState(false); // Mock auth state
+  const { user, logout } = useAuth();
 
   const NavLinks = () => (
     <>
@@ -81,23 +89,44 @@ const Header = () => {
             </Button>
 
             {/* Cart */}
-            <Button variant="ghost" size="sm" className="relative">
-              <ShoppingCart className="h-5 w-5" />
-              {cartCount > 0 && (
-                <Badge 
-                  variant="destructive" 
-                  className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center text-xs p-0"
-                >
-                  {cartCount}
-                </Badge>
-              )}
-            </Button>
+            <CartDrawer />
 
             {/* User Account */}
-            {isLoggedIn ? (
-              <Button variant="ghost" size="sm">
-                <User className="h-5 w-5" />
-              </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{user.name}</p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {user.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/account">Minha Conta</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/orders">Meus Pedidos</Link>
+                  </DropdownMenuItem>
+                  {user.role === 'admin' && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/admin">Painel Admin</Link>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={logout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Sair</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <div className="hidden sm:flex items-center gap-2">
                 <Link to="/login">
@@ -119,7 +148,7 @@ const Header = () => {
               <SheetContent side="right" className="w-80">
                 <nav className="flex flex-col gap-4 mt-8">
                   <NavLinks />
-                  {!isLoggedIn && (
+                  {!user && (
                     <div className="flex flex-col gap-2 pt-4 border-t">
                       <Link to="/login">
                         <Button variant="outline" className="w-full">Login</Button>

@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Heart, ShoppingCart, Star } from 'lucide-react';
+import { Star, Heart, ShoppingCart } from 'lucide-react';
+import { useCart } from '@/contexts/CartContext';
+import { useToast } from '@/hooks/use-toast';
 
 interface Product {
   id: string;
@@ -12,10 +14,11 @@ interface Product {
   price: number;
   originalPrice?: number;
   image: string;
-  rating: number;
-  reviews: number;
+  rating?: number;
+  reviews?: number;
   discount?: number;
   freeShipping?: boolean;
+  category?: string;
 }
 
 interface ProductCardProps {
@@ -24,55 +27,60 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(price);
-  };
+  const { addItem } = useCart();
+  const { toast } = useToast();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
-    // Add to cart logic here
-    console.log('Added to cart:', product.id);
+    e.stopPropagation();
+    
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image
+    });
+
+    toast({
+      title: "Produto adicionado!",
+      description: `${product.name} foi adicionado ao carrinho`,
+    });
   };
 
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setIsWishlisted(!isWishlisted);
+    
+    toast({
+      title: isWishlisted ? "Removido dos favoritos" : "Adicionado aos favoritos",
+      description: product.name,
+    });
   };
 
-  return (
-    <Card className="group hover-lift overflow-hidden border-border/50 hover:border-primary/50 transition-all duration-300">
-      <Link to={`/product/${product.id}`}>
-        <div className="relative overflow-hidden">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-300"
-            loading="lazy"
-          />
-          
-          {/* Badges */}
-          <div className="absolute top-2 left-2 flex flex-col gap-1">
-            {product.discount && (
-              <Badge variant="destructive" className="text-xs">
-                -{product.discount}%
-              </Badge>
-            )}
-            {product.freeShipping && (
-              <Badge className="text-xs bg-green-600 hover:bg-green-700">
-                Frete Grátis
-              </Badge>
-            )}
-          </div>
+  const discountedPrice = product.originalPrice && product.discount 
+    ? product.originalPrice * (1 - product.discount / 100)
+    : product.price;
 
+  return (
+    <Link to={`/product/${product.id}`}>
+      <Card className="group hover-lift cursor-pointer h-full">
+        <div className="relative overflow-hidden">
+          {/* Discount Badge */}
+          {product.discount && (
+            <Badge 
+              variant="destructive" 
+              className="absolute top-2 left-2 z-10"
+            >
+              -{product.discount}%
+            </Badge>
+          )}
+          
           {/* Wishlist Button */}
           <Button
             variant="ghost"
             size="sm"
-            className="absolute top-2 right-2 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+            className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity"
             onClick={handleWishlist}
           >
             <Heart 
@@ -80,69 +88,83 @@ const ProductCard = ({ product }: ProductCardProps) => {
             />
           </Button>
 
+          {/* Product Image */}
+          <div className="aspect-square overflow-hidden">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full h-full object-cover transition-transform group-hover:scale-105"
+              loading="lazy"
+            />
+          </div>
+
           {/* Quick Add to Cart */}
-          <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
             <Button 
-              size="sm" 
-              className="w-full"
+              className="w-full" 
+              size="sm"
               onClick={handleAddToCart}
             >
               <ShoppingCart className="h-4 w-4 mr-2" />
-              Adicionar
+              Adicionar ao Carrinho
             </Button>
           </div>
         </div>
-      </Link>
 
-      <CardContent className="p-4">
-        <Link to={`/product/${product.id}`}>
-          <h3 className="font-medium text-sm mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+        <CardContent className="p-4">
+          {/* Free Shipping Badge */}
+          {product.freeShipping && (
+            <Badge variant="secondary" className="mb-2 text-xs">
+              Frete Grátis
+            </Badge>
+          )}
+
+          {/* Product Name */}
+          <h3 className="font-medium text-sm line-clamp-2 mb-2 min-h-[2.5rem]">
             {product.name}
           </h3>
-        </Link>
 
-        {/* Rating */}
-        <div className="flex items-center gap-1 mb-2">
-          <div className="flex items-center">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                className={`h-3 w-3 ${
-                  i < Math.floor(product.rating)
-                    ? 'fill-yellow-400 text-yellow-400'
-                    : 'text-muted-foreground'
-                }`}
-              />
-            ))}
-          </div>
-          <span className="text-xs text-muted-foreground">
-            ({product.reviews})
-          </span>
-        </div>
-
-        {/* Price */}
-        <div className="flex items-center gap-2 mb-3">
-          <span className="font-bold text-primary">
-            {formatPrice(product.price)}
-          </span>
-          {product.originalPrice && (
-            <span className="text-xs text-muted-foreground line-through">
-              {formatPrice(product.originalPrice)}
-            </span>
+          {/* Rating */}
+          {product.rating && (
+            <div className="flex items-center gap-1 mb-2">
+              <div className="flex">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`h-3 w-3 ${
+                      i < Math.floor(product.rating!)
+                        ? 'fill-yellow-400 text-yellow-400'
+                        : 'text-gray-300'
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className="text-xs text-muted-foreground">
+                ({product.reviews})
+              </span>
+            </div>
           )}
-        </div>
 
-        {/* Mobile Add to Cart */}
-        <Button 
-          size="sm" 
-          className="w-full sm:hidden"
-          onClick={handleAddToCart}
-        >
-          <ShoppingCart className="h-4 w-4 mr-2" />
-          Adicionar ao Carrinho
-        </Button>
-      </CardContent>
-    </Card>
+          {/* Price */}
+          <div className="space-y-1">
+            {product.originalPrice && product.originalPrice > product.price ? (
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-bold text-primary">
+                  R$ {discountedPrice.toFixed(2)}
+                </span>
+                <span className="text-sm text-muted-foreground line-through">
+                  R$ {product.originalPrice.toFixed(2)}
+                </span>
+              </div>
+            ) : (
+              <span className="text-lg font-bold text-primary">
+                R$ {product.price.toFixed(2)}
+              </span>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
   );
 };
 
