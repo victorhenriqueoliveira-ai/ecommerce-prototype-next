@@ -113,7 +113,7 @@ const Checkout = () => {
     return (
       <>
         <Helmet>
-          <title>Checkout - ElegantShop</title>
+          <title>Checkout - Fidee</title>
         </Helmet>
         <div className="min-h-screen bg-background">
           <Header />
@@ -134,7 +134,7 @@ const Checkout = () => {
   return (
     <>
       <Helmet>
-        <title>Finalizar Compra - ElegantShop</title>
+        <title>Finalizar Compra - Fidee</title>
         <meta name="description" content="Finalize sua compra de forma segura" />
       </Helmet>
 

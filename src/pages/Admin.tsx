@@ -80,7 +80,7 @@ const Admin = () => {
   return (
     <>
       <Helmet>
-        <title>Painel Administrativo - ElegantShop</title>
+        <title>Painel Administrativo - Fidee</title>
         <meta name="description" content="Painel de controle administrativo" />
       </Helmet>
 
@@ -130,9 +130,9 @@ const Admin = () => {
                     <DollarSign className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">R$ 28.000</div>
+                    <div className="text-2xl font-bold">R$ 0,00</div>
                     <p className="text-xs text-muted-foreground">
-                      +12% em relação ao mês anterior
+                      0% em relação ao mês anterior
                     </p>
                   </CardContent>
                 </Card>
@@ -145,9 +145,9 @@ const Admin = () => {
                     <ShoppingCart className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">156</div>
+                    <div className="text-2xl font-bold">0</div>
                     <p className="text-xs text-muted-foreground">
-                      +8% em relação ao mês anterior
+                      0% em relação ao mês anterior
                     </p>
                   </CardContent>
                 </Card>
@@ -160,9 +160,9 @@ const Admin = () => {
                     <Package className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">234</div>
+                    <div className="text-2xl font-bold">0</div>
                     <p className="text-xs text-muted-foreground">
-                      5 produtos com estoque baixo
+                      0 produtos com estoque baixo
                     </p>
                   </CardContent>
                 </Card>
@@ -175,9 +175,9 @@ const Admin = () => {
                     <Users className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">1.234</div>
+                    <div className="text-2xl font-bold">0</div>
                     <p className="text-xs text-muted-foreground">
-                      +45 novos este mês
+                      0 novos este mês
                     </p>
                   </CardContent>
                 </Card>

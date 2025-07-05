@@ -9,7 +9,7 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>ElegantShop - E-commerce com os Melhores Produtos e Preços</title>
+        <title>Fidee - E-commerce com os Melhores Produtos e Preços</title>
         <meta 
           name="description" 
           content="Descubra milhares de produtos com qualidade garantida, entrega rápida e os melhores preços do mercado. Eletrônicos, moda, casa e muito mais!" 
@@ -17,7 +17,7 @@ const Index = () => {
         <meta name="keywords" content="e-commerce, loja online, produtos, eletrônicos, moda, casa, ofertas" />
         
         {/* Open Graph */}
-        <meta property="og:title" content="ElegantShop - E-commerce com os Melhores Produtos e Preços" />
+        <meta property="og:title" content="Fidee - E-commerce com os Melhores Produtos e Preços" />
         <meta property="og:description" content="Descubra milhares de produtos com qualidade garantida, entrega rápida e os melhores preços do mercado." />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80" />
@@ -27,7 +27,7 @@ const Index = () => {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebSite",
-            "name": "ElegantShop",
+            "name": "Fidee",
             "description": "E-commerce com os melhores produtos e preços",
             "url": window.location.origin,
             "potentialAction": {

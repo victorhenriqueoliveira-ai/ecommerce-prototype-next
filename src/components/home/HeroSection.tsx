@@ -40,12 +40,12 @@ const HeroSection = () => {
                 <div className="text-sm text-muted-foreground">Produtos</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">50K+</div>
+                <div className="text-2xl font-bold text-primary">100K+</div>
                 <div className="text-sm text-muted-foreground">Clientes</div>
               </div>
               <div className="flex items-center gap-1">
                 <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                <div className="text-2xl font-bold text-primary">4.8</div>
+                <div className="text-2xl font-bold text-primary">5.0</div>
                 <div className="text-sm text-muted-foreground">Avaliação</div>
               </div>
             </div>
@@ -96,7 +96,7 @@ const HeroSection = () => {
                     <span className="text-primary-foreground text-xs">%</span>
                   </div>
                   <div>
-                    <div className="text-xs font-medium">Até 70% OFF</div>
+                    <div className="text-xs font-medium">Até 30% OFF</div>
                     <div className="text-xs text-muted-foreground">Em produtos selecionados</div>
                   </div>
                 </div>

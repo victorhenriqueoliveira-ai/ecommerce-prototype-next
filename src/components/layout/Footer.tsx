@@ -10,9 +10,9 @@ const Footer = () => {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold">E</span>
+                <span className="text-primary-foreground font-bold">F</span>
               </div>
-              <span className="text-lg font-bold gradient-text">ElegantShop</span>
+              <span className="text-lg font-bold gradient-text">Fidee</span>
             </div>
             <p className="text-muted-foreground mb-4">
               Sua loja online de confiança com os melhores produtos e preços.
@@ -93,7 +93,7 @@ const Footer = () => {
 
         <div className="border-t border-border/30 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm">
-            © 2024 ElegantShop. Todos os direitos reservados.
+            © 2024 Fidee. Todos os direitos reservados.
           </p>
           <p className="text-muted-foreground text-sm">
             CNPJ: 00.000.000/0001-00

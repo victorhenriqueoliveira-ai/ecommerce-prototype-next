@@ -16,7 +16,7 @@ const Cart = () => {
     return (
       <>
         <Helmet>
-          <title>Carrinho de Compras - ElegantShop</title>
+          <title>Carrinho de Compras - Fidee</title>
           <meta name="description" content="Seu carrinho de compras está vazio. Explore nossa seleção de produtos." />
         </Helmet>
 
@@ -47,7 +47,7 @@ const Cart = () => {
   return (
     <>
       <Helmet>
-        <title>Carrinho de Compras ({itemCount} itens) - ElegantShop</title>
+        <title>Carrinho de Compras ({itemCount} itens) - Fidee</title>
         <meta name="description" content={`Revise seus ${itemCount} itens no carrinho antes de finalizar a compra.`} />
       </Helmet>
 
