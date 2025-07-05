@@ -60,7 +60,7 @@ const Account = () => {
   return (
     <>
       <Helmet>
-        <title>Minha Conta - ElegantShop</title>
+        <title>Minha Conta - Fidee</title>
         <meta name="description" content="Gerencie sua conta, pedidos e configurações" />
       </Helmet>
 

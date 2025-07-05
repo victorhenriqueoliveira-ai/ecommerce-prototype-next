@@ -49,8 +49,8 @@ const Login = () => {
   return (
     <>
       <Helmet>
-        <title>Login - ElegantShop</title>
-        <meta name="description" content="Faça login em sua conta ElegantShop" />
+        <title>Login - Fidee</title>
+        <meta name="description" content="Faça login em sua conta Fidee" />
       </Helmet>
 
       <div className="min-h-screen bg-background">

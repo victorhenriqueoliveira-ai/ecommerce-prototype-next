@@ -51,7 +51,7 @@ const Register = () => {
     if (success) {
       toast({
         title: "Cadastro realizado com sucesso!",
-        description: "Bem-vindo ao ElegantShop!"
+        description: "Bem-vindo ao Fidee!"
       });
       navigate('/');
     } else {
@@ -66,8 +66,8 @@ const Register = () => {
   return (
     <>
       <Helmet>
-        <title>Cadastro - ElegantShop</title>
-        <meta name="description" content="Crie sua conta no ElegantShop" />
+        <title>Cadastro - Fidee</title>
+        <meta name="description" content="Crie sua conta no Fidee" />
       </Helmet>
 
       <div className="min-h-screen bg-background">

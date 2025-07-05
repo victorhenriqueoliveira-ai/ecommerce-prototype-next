@@ -58,7 +58,7 @@ export const fakeCheckout = async (data: CheckoutData): Promise<CheckoutResponse
       response.paymentUrl = `https://payment.abacatepay.com/card/${orderId}`;
       break;
     case 'pix':
-      response.pixCode = `00020126580014BR.GOV.BCB.PIX0136${orderId}520400005303986540${data.total.toFixed(2)}5802BR5925ElegantShop6009SAO PAULO62070503***6304`;
+      response.pixCode = `00020126580014BR.GOV.BCB.PIX0136${orderId}520400005303986540${data.total.toFixed(2)}5802BR5925Fidee6009SAO PAULO62070503***6304`;
       break;
     case 'boleto':
       response.boletoUrl = `https://payment.abacatepay.com/boleto/${orderId}`;

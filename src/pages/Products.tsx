@@ -83,14 +83,14 @@ const Products = () => {
   return (
     <>
       <Helmet>
-        <title>Produtos - ElegantShop | Encontre os Melhores Produtos</title>
+        <title>Produtos - Fidee | Encontre os Melhores Produtos</title>
         <meta 
           name="description" 
           content="Explore nossa ampla seleção de produtos com os melhores preços. Eletrônicos, moda, casa e jardim, esportes e muito mais!" 
         />
         <meta name="keywords" content="produtos, loja online, eletrônicos, moda, ofertas, e-commerce" />
         
-        <meta property="og:title" content="Produtos - ElegantShop" />
+        <meta property="og:title" content="Produtos - Fidee" />
         <meta property="og:description" content="Explore nossa ampla seleção de produtos com os melhores preços." />
         <meta property="og:type" content="website" />
       </Helmet>
