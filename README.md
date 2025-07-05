@@ -1,9 +1,5 @@
 # Welcome to your ecommerce-prototype-next
 
-## Project info
-
-**URL**: https://lovable.dev/projects/329b0114-4472-45fc-b273-38a063e69e04
-
 Follow these steps:
 
 ```sh
