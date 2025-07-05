@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { 
@@ -10,7 +9,8 @@ import {
   TrendingUp,
   DollarSign,
   AlertTriangle,
-  Eye
+  Eye,
+  Plus
 } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
@@ -21,10 +21,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
+import AddProductForm from '@/components/admin/AddProductForm';
+import OrderDetailsModal from '@/components/admin/OrderDetailsModal';
 
 const Admin = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [showAddProduct, setShowAddProduct] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<any>(null);
 
   if (!user || user.role !== 'admin') {
     navigate('/login');
@@ -292,12 +296,15 @@ const Admin = () => {
                       Adicione, edite ou remova produtos da loja
                     </CardDescription>
                   </div>
-                  <Button>Adicionar Produto</Button>
+                  <Button onClick={() => setShowAddProduct(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Adicionar Produto
+                  </Button>
                 </CardHeader>
                 <CardContent>
                   <div className="text-center py-12">
                     <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground">CRUD de produtos será implementado com Supabase</p>
+                    <p className="text-muted-foreground">Lista de produtos será implementada com Supabase</p>
                   </div>
                 </CardContent>
               </Card>
@@ -338,7 +345,11 @@ const Admin = () => {
                             {new Date(order.date).toLocaleDateString('pt-BR')}
                           </TableCell>
                           <TableCell>
-                            <Button variant="ghost" size="sm">
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              onClick={() => setSelectedOrder(order)}
+                            >
                               <Eye className="h-4 w-4" />
                             </Button>
                           </TableCell>
@@ -386,6 +397,18 @@ const Admin = () => {
           </Tabs>
         </main>
       </div>
+
+      {/* Modals */}
+      <AddProductForm 
+        isOpen={showAddProduct} 
+        onClose={() => setShowAddProduct(false)} 
+      />
+      
+      <OrderDetailsModal
+        isOpen={!!selectedOrder}
+        onClose={() => setSelectedOrder(null)}
+        order={selectedOrder}
+      />
     </>
   );
 };

@@ -29,14 +29,15 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const success = await login(formData.email, formData.password);
+    const result = await login(formData.email, formData.password);
     
-    if (success) {
+    if (result.success) {
       toast({
         title: "Login realizado com sucesso!",
         description: "Bem-vindo de volta!"
       });
-      navigate(from, { replace: true });
+      // Use redirectTo from login result or fallback to 'from'
+      navigate(result.redirectTo || from, { replace: true });
     } else {
       toast({
         title: "Erro no login",

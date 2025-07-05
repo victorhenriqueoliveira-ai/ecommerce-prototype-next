@@ -9,6 +9,8 @@ import { CartProvider } from '@/contexts/CartContext';
 import { AuthProvider } from '@/contexts/AuthContext';
 import Index from "./pages/Index";
 import Products from "./pages/Products";
+import Categories from "./pages/Categories";
+import Deals from "./pages/Deals";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Login from "./pages/Login";
@@ -34,8 +36,8 @@ const App = () => (
                 {/* Products Routes */}
                 <Route path="/products" element={<Products />} />
                 <Route path="/product/:id" element={<div>Product Detail - Coming Soon</div>} />
-                <Route path="/categories" element={<div>Categories Page - Coming Soon</div>} />
-                <Route path="/deals" element={<div>Deals Page - Coming Soon</div>} />
+                <Route path="/categories" element={<Categories />} />
+                <Route path="/deals" element={<Deals />} />
                 
                 {/* Shopping Routes */}
                 <Route path="/cart" element={<Cart />} />

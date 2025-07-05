@@ -10,7 +10,7 @@ export interface User {
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<{ success: boolean; redirectTo?: string }>;
   logout: () => void;
   register: (email: string, password: string, name: string) => Promise<boolean>;
   isLoading: boolean;
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<{ success: boolean; redirectTo?: string }> => {
     setIsLoading(true);
     
     // Simulate API delay
@@ -67,11 +67,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(userData);
       localStorage.setItem('user', JSON.stringify(userData));
       setIsLoading(false);
-      return true;
+      
+      // Redirect admin to admin panel
+      const redirectTo = mockUser.role === 'admin' ? '/admin' : '/account';
+      return { success: true, redirectTo };
     }
     
     setIsLoading(false);
-    return false;
+    return { success: false };
   };
 
   const register = async (email: string, password: string, name: string): Promise<boolean> => {
