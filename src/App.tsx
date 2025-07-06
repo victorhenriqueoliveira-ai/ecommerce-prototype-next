@@ -18,6 +18,8 @@ import Register from "./pages/Register";
 import Account from "./pages/Account";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import ProductDetail from "./pages/ProductDetail";
+import Track from "./pages/Track";
 
 const queryClient = new QueryClient();
 

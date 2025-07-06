@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -361,7 +360,7 @@ const ProductDetail = () => {
                     {Object.entries(product.specs).map(([key, value]) => (
                       <div key={key} className="flex justify-between p-3 border rounded">
                         <span className="font-medium">{key}:</span>
-                        <span className="text-muted-foreground">{value}</span>
+                        <span className="text-muted-foreground">{String(value)}</span>
                       </div>
                     ))}
                   </div>
