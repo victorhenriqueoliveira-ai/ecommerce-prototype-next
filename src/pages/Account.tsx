@@ -1,19 +1,33 @@
-
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { User, ShoppingBag, Settings, LogOut, Package, Heart } from 'lucide-react';
+import { User, ShoppingBag, Settings, LogOut, Package, Heart, Eye } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import OrderDetailsModal from '@/components/customer/OrderDetailsModal';
 
 const Account = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    name: user?.name || '',
+    email: user?.email || '',
+    phone: '',
+    address: '',
+    city: '',
+    state: '',
+    zipCode: ''
+  });
 
   // Mock data - replace with Supabase queries
   const mockOrders = [
@@ -24,7 +38,11 @@ const Account = () => {
       total: 299.99,
       items: [
         { name: 'Smartphone Galaxy A54', quantity: 1, price: 299.99 }
-      ]
+      ],
+      paymentMethod: 'Cartão de Crédito',
+      trackingCode: 'BR123456789',
+      shippingAddress: 'Rua das Flores, 123 - São Paulo, SP - 01234-567',
+      canCancel: false
     },
     {
       id: 'ORD-002',
@@ -33,7 +51,11 @@ const Account = () => {
       total: 159.99,
       items: [
         { name: 'Fone Bluetooth Premium', quantity: 1, price: 159.99 }
-      ]
+      ],
+      paymentMethod: 'PIX',
+      trackingCode: 'BR987654321',
+      shippingAddress: 'Av. Principal, 456 - Rio de Janeiro, RJ - 20000-000',
+      canCancel: true
     }
   ];
 
@@ -50,6 +72,22 @@ const Account = () => {
   const handleLogout = () => {
     logout();
     navigate('/');
+  };
+
+  const handleOrderClick = (order: any) => {
+    setSelectedOrder(order);
+    setIsModalOpen(true);
+  };
+
+  const handleCancelOrder = async (orderId: string) => {
+    // Mock cancel order logic
+    console.log('Cancelando pedido:', orderId);
+  };
+
+  const handleSaveProfile = () => {
+    // Mock save profile logic
+    console.log('Salvando perfil:', formData);
+    setIsEditing(false);
   };
 
   if (!user) {
@@ -120,22 +158,30 @@ const Account = () => {
                                 {new Date(order.date).toLocaleDateString('pt-BR')}
                               </p>
                             </div>
-                            <div className="text-right">
+                            <div className="flex items-center gap-2">
                               <Badge variant={getStatusBadge(order.status).variant}>
                                 {getStatusBadge(order.status).label}
                               </Badge>
-                              <p className="text-lg font-semibold text-primary mt-1">
-                                R$ {order.total.toFixed(2)}
-                              </p>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleOrderClick(order)}
+                              >
+                                <Eye className="h-4 w-4" />
+                              </Button>
                             </div>
                           </div>
-                          <div className="space-y-2">
-                            {order.items.map((item, index) => (
-                              <div key={index} className="flex justify-between text-sm">
-                                <span>{item.name} x{item.quantity}</span>
-                                <span>R$ {item.price.toFixed(2)}</span>
-                              </div>
-                            ))}
+                          <div className="flex justify-between items-center">
+                            <div className="space-y-1">
+                              {order.items.map((item, index) => (
+                                <div key={index} className="text-sm">
+                                  {item.name} x{item.quantity}
+                                </div>
+                              ))}
+                            </div>
+                            <p className="text-lg font-semibold text-primary">
+                              R$ {order.total.toFixed(2)}
+                            </p>
                           </div>
                         </div>
                       ))}
@@ -154,19 +200,94 @@ const Account = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium">Nome</label>
-                      <p className="text-sm text-muted-foreground">{user.name}</p>
+                  {isEditing ? (
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="name">Nome Completo</Label>
+                          <Input
+                            id="name"
+                            value={formData.name}
+                            onChange={(e) => setFormData({...formData, name: e.target.value})}
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="email">Email</Label>
+                          <Input
+                            id="email"
+                            value={formData.email}
+                            onChange={(e) => setFormData({...formData, email: e.target.value})}
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="phone">Telefone</Label>
+                          <Input
+                            id="phone"
+                            value={formData.phone}
+                            onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="zipCode">CEP</Label>
+                          <Input
+                            id="zipCode"
+                            value={formData.zipCode}
+                            onChange={(e) => setFormData({...formData, zipCode: e.target.value})}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="address">Endereço</Label>
+                        <Input
+                          id="address"
+                          value={formData.address}
+                          onChange={(e) => setFormData({...formData, address: e.target.value})}
+                        />
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="city">Cidade</Label>
+                          <Input
+                            id="city"
+                            value={formData.city}
+                            onChange={(e) => setFormData({...formData, city: e.target.value})}
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="state">Estado</Label>
+                          <Input
+                            id="state"
+                            value={formData.state}
+                            onChange={(e) => setFormData({...formData, state: e.target.value})}
+                          />
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button onClick={handleSaveProfile}>
+                          Salvar Alterações
+                        </Button>
+                        <Button variant="outline" onClick={() => setIsEditing(false)}>
+                          Cancelar
+                        </Button>
+                      </div>
                     </div>
-                    <div>
-                      <label className="text-sm font-medium">Email</label>
-                      <p className="text-sm text-muted-foreground">{user.email}</p>
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-sm font-medium">Nome</label>
+                          <p className="text-sm text-muted-foreground">{user.name}</p>
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium">Email</label>
+                          <p className="text-sm text-muted-foreground">{user.email}</p>
+                        </div>
+                      </div>
+                      <Button variant="outline" onClick={() => setIsEditing(true)}>
+                        Editar Informações
+                      </Button>
                     </div>
-                  </div>
-                  <Button variant="outline">
-                    Editar Informações
-                  </Button>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -183,7 +304,7 @@ const Account = () => {
                   <div className="text-center py-8">
                     <Heart className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                     <p className="text-muted-foreground">Sua lista de desejos está vazia</p>
-                    <Button variant="outline" className="mt-4">
+                    <Button variant="outline" className="mt-4" onClick={() => navigate('/products')}>
                       Explorar Produtos
                     </Button>
                   </div>
@@ -241,6 +362,14 @@ const Account = () => {
         </main>
         
         <Footer />
+
+        {/* Order Details Modal */}
+        <OrderDetailsModal
+          order={selectedOrder}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onCancelOrder={handleCancelOrder}
+        />
       </div>
     </>
   );

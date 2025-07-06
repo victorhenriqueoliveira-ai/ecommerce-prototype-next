@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { 
@@ -24,6 +24,15 @@ import { useAuth } from '@/contexts/AuthContext';
 
 const Header = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   const NavLinks = () => (
     <>
@@ -72,13 +81,15 @@ const Header = () => {
 
           {/* Search Bar */}
           <div className="flex-1 max-w-2xl mx-4">
-            <div className="relative">
+            <form onSubmit={handleSearch} className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
                 placeholder="Buscar produtos..."
                 className="pl-10 bg-muted/50 border-border/50 focus:border-primary"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
-            </div>
+            </form>
           </div>
 
           {/* Actions */}
